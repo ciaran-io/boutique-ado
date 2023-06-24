@@ -1,13 +1,33 @@
 {% load static %}
+{% load django_vite %}
+
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Boutique Ado</title>
+
+  {% block meta %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  {% endblock %}
+
+  {% block extra_meta %}{% endblock %}
+  {% block extra_css %}{% endblock %}
+  {% block extra_js %}{% endblock %}
+
+  <title>Boutique Ado {% block extra_tite %}{% endblock %}</title>
+
+  {% vite_hmr_client %}
+  {% vite_asset 'js/css-import.js' %}
+
 </head>
 <body>
+  <header></header>
+
+  {% if messages %}
+  {% endif %}
+
+  {% block content %}{% endblock %}
 
 </body>
 </html>

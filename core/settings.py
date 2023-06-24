@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,6 +41,7 @@ AUTHENTICATION_BACKENDS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'django_vite',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -52,6 +54,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.apple',
+    'apps.home',
 ]
 
 # Provider specific settings
@@ -96,7 +99,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
+        'DIRS': [BASE_DIR / 'templates', BASE_DIR / 'templates' / 'allauth']
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -156,9 +159,16 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
+# Vite settings
+DJANGO_VITE_DEV_MODE = DEBUG
+DJANGO_VITE_ASSETS_PATH = BASE_DIR / 'static' / 'dist'
+DJANGO_VITE_MANIFEST_PATH = BASE_DIR / 'static' / 'dist' / 'manifest.json'
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [DJANGO_VITE_ASSETS_PATH,
+                    BASE_DIR / 'static' / 'assets'/'images']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
