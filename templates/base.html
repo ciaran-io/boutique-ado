@@ -1,33 +1,150 @@
-{% load static %}
 {% load django_vite %}
+{% load static %}
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    {% block meta %}
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
+    />
+    <meta
+      http-equiv="X-UA-Compatible"
+      content="ie=edge"
+    />
+    {% endblock %}
+    <!-- prettier-ignore -->
+    {% block extra_meta %}{% endblock %}
+    {% block extra_css %}{% endblock %}
+    {% block extra_js %}{% endblock %}
 
-  {% block meta %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  {% endblock %}
+    {% vite_hmr_client %}
+    {% vite_asset 'js/css-import.js' %}
+    {% vite_asset 'js/main.js' %}
 
-  {% block extra_meta %}{% endblock %}
-  {% block extra_css %}{% endblock %}
-  {% block extra_js %}{% endblock %}
+    <title>Boutique Ado {% block extra_tite %}{% endblock %}</title>
+  </head>
+  <body>
+    <header class="bg-amber-400 pt-6 text-gray-900 md:pt-12">
+      <div class="container">
+        {# Mobile menu flyout menu #}
+        <div
+          class="fixed -left-full top-0 z-10 hidden h-full w-4/5 bg-white transition-all duration-300 ease-in-out"
+          id="mobile-menu"
+        >
+          <nav aria-label="Mobile Navigation Menu">
+            <div class="grid h-32 bg-gray-800 px-4 pt-12 text-xl text-white">
+              <span>Browse</span>
+              <span>Boutique Ado</span>
+            </div>
+            {# mobile navigation links #}
+            <div class="px-4 text-gray-800">
+              {% include 'partials/navmenu.html' %}
+            </div>
+          </nav>
+        </div>
 
-  <title>Boutique Ado {% block extra_tite %}{% endblock %}</title>
+        {# mobile menu buton close #}
+        <div
+          id="menu-overlay"
+          class="fixed right-0 top-0 z-0 hidden h-full w-1/5 bg-black/70 transition-all duration-300 ease-in-out"
+          aria-controls="mobile-menu"
+          aria-label="Close mobile menu"
+        >
+          <button
+            aria-controls="mobile-menu"
+            aria-label="Close mobile menu"
+            class="relative mt-10 w-full"
+          >
+            <img
+              src="{% static 'icons/close.svg' %}"
+              class="mx-auto"
+              alt="close menu icon"
+              height="28"
+              width="28"
+              loading="lazy"
+            >
+          </button>
+        </div>
 
-  {% vite_hmr_client %}
-  {% vite_asset 'js/css-import.js' %}
+        {# desktop navigation #}
+        <nav aria-label="Desktop Navigation" class="space-y-4">
+          <div class="flex flex-wrap items-start justify-between gap-y-4">
+            <div class="flex grow gap-x-2">
+              {# mobile menu button #}
+              <button
+                class="md:hidden"
+                id="mobile-menu-open"
+                aria-controls="mobile-menu"
+                aria-label="Open mobile menu"
+                aria-expanded="false"
+              >
+                <img
+                  src="{% static 'icons/menu.svg' %}"
+                  alt="open menu icon"
+                  height="28"
+                  width="28"
+                  loading="eager"
+                >
+              </button>
 
-</head>
-<body>
-  <header></header>
+              {# Logo #}
+              <div class="text-xl md:text-2xl">
+                <span>Boutique Ado</span>
+              </div>
+              {# search bar desktop #}
+              <div class="mx-auto hidden w-2/3 md:block">
+                {% include 'partials/searchbar.html' %}
+              </div>
+            </div>
 
-  {% if messages %}
-  {% endif %}
+            {# User sign & shopping basket#}
+            <div class="flex items-center gap-x-6">
+              <div class="flex items-start">
+                <a
+                  href=""
+                  class="hidden text-sm md:block"
+                  >Sign in</a
+                >
+                <img
+                  src="{% static 'icons/profile.svg' %}"
+                  alt="profile icon"
+                  height="28"
+                  width="28"
+                  loading="eager"
+                >
+              </div>
+              {# Shopping link #}
+              <div>
+                <a href=""></a>
+                <img
+                  src="{% static 'icons/bag.svg' %}"
+                  alt="shopping bag icon"
+                  height="28"
+                  width="28"
+                  loading="eager"
+                >
+              </div>
+            </div>
+          </div>
 
-  {% block content %}{% endblock %}
+          <div>
+            {# navigation links desktop #}
+            <div class="hidden justify-center md:flex md:gap-x-8">
+              {% include 'partials/navmenu.html' %}
+            </div>
+          </div>
 
-</body>
+          {# search bar mobile #}
+          <div class="md:hidden">{% include 'partials/searchbar.html' %}</div>
+        </nav>
+      </div>
+    </header>
+    <!-- prettier-ignore -->
+    {% if messages %} {% endif %}
+    {% block page_header %} {% endblock %}
+    {%block content %}{% endblock %}
+  </body>
 </html>
