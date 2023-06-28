@@ -2,7 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-
-body {
-   @apply bg-gray-700 border-y-teal-100 text-5xl;
+/* Mobile menu*/
+#mobile-menu[menu-visible='true'] {
+  @apply left-0;
 }
+
+@layer base {
+  body {
+    @apply relative -z-10 h-screen w-full bg-cover bg-fixed bg-no-repeat;
+    background-image: image-set(
+      url('../images/home-banner-lg.webp') 1x,
+      url('../images/home-banner-lg@2x.webp') 2x
+    );
+    background-position: center center;
+
+    @screen md {
+      background-image: -webkit-image-set(
+        url('../images/home-banner-xl.webp') 1x,
+        url('../images/home-banner-xl@2x.webp') 2x
+      );
+    }
+
+    @screen lg {
+      background-image: url('../images/home-banner.webp');
+    }
+  }
+}
+/*Home page hero banner*/
