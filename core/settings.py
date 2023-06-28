@@ -167,7 +167,7 @@ DJANGO_VITE_MANIFEST_PATH = BASE_DIR / 'static' / 'dist' / 'manifest.json'
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [DJANGO_VITE_ASSETS_PATH,
-                    BASE_DIR / 'static' / 'assets'/'images']
+                    BASE_DIR / 'static/assets']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
