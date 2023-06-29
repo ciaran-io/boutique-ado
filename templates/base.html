@@ -27,7 +27,7 @@
     <title>Boutique Ado {% block extra_tite %}{% endblock %}</title>
   </head>
   <body>
-    <header class="bg-amber-400 pt-6 text-gray-900 md:pt-12">
+    <header class="bg-amber-400 py-6 text-gray-900 md:py-12">
       <div class="container">
         {# Mobile menu flyout menu #}
         <div
@@ -92,11 +92,11 @@
 
               {# Logo #}
               <div class="text-xl md:text-2xl">
-                <span>Boutique Ado</span>
+                <a href="{% url 'home' %}">Boutique Ado</a>
               </div>
               {# search bar desktop #}
               <div class="mx-auto hidden w-2/3 md:block">
-                {% include 'partials/searchbar.html' %}
+                {% include 'partials/searchform.html' %}
               </div>
             </div>
 
@@ -138,13 +138,14 @@
           </div>
 
           {# search bar mobile #}
-          <div class="md:hidden">{% include 'partials/searchbar.html' %}</div>
+          <div class="md:hidden">{% include 'partials/searchform.html' %}</div>
         </nav>
       </div>
     </header>
+
     <!-- prettier-ignore -->
     {% if messages %} {% endif %}
     {% block page_header %} {% endblock %}
-    {%block content %}{% endblock %}
+    {% block content %}{% endblock %}
   </body>
 </html>

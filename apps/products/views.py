@@ -1,6 +1,11 @@
-from .models import Product
+from django.contrib import messages
+from django.db.models import Q
+from django.shortcuts import get_object_or_404, redirect, reverse
 from django.views.generic import TemplateView
-from django.shortcuts import render, get_object_or_404
+
+from .models import Product
+
+
 # Create your views here.
 
 
@@ -8,10 +13,28 @@ class AllProductsView(TemplateView):
     """ A view to show all products, including sorting and search queries"""
     template_name = 'products.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['products'] = Product.objects.all()
-        return context
+    def get(self, request, *args, **kwargs):
+        query = request.GET.get('q')
+        products = Product.objects.all()
+        search_results = True  # Flag to indicate if any search results found
+
+        if query:
+            products = products.filter(
+                Q(name__icontains=query) | Q(description__icontains=query)
+            )
+            search_results = bool(
+                products)  # Set flag based on the presence of search results
+            if not search_results:
+                messages.error(request,
+                               "No products found for the search criteria.")
+                return redirect(reverse('products'))
+
+        context = self.get_context_data(
+            products=products,
+            search_term=query,
+            search_results=search_results,
+        )
+        return self.render_to_response(context)
 
 
 class ProductDetailView(TemplateView):
