@@ -27,5 +27,18 @@
       background-image: url('../images/home-banner.webp');
     }
   }
+
+/* Product page*/
+#products > div {
+    @apply relative z-10;
+
+    ::after {
+      @apply
+      content-['']
+      absolute
+      bg-gray-200
+      -bottom-7
+      h-0.5
+      w-[calc(100%+4rem)]; /*4rem is the is the grid gap between the products*/
+    }
 }
-/*Home page hero banner*/
