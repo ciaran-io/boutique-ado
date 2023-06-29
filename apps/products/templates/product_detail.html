@@ -1,0 +1,138 @@
+{% extends "base.html" %} {% load static %} {% block page_header %}
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+  </div>
+</div>
+{% endblock %} {% block content %}
+
+<main class="container mt-24 space-y-12">
+  <section>
+    {# mobile product display #}
+    <div class="space-y-6 md:hidden">
+      <h1 class="max-w-[20ch] text-2xl">{{ product.name }}</h1>
+      <div class="flex gap-x-2">
+        <p class="block text-lg font-bold">€{{ product.price }}</p>
+        <div class="flex items-center gap-x-1">
+          <svg
+            aria-hidden="true"
+            class="h-4 w-4"
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="m8 18l4-3.05L16 18l-1.5-4.95l4-2.85h-4.9L12 5l-1.6 5.2H5.5l4 2.85L8 18Zm4 4q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Z"
+            ></path>
+          </svg>
+          <p
+            aria-label="product rating"
+            class="text-sm"
+          >
+            {% if product.rating %} {{ product.rating }} / 5 {% else %} No
+            rating yet {% endif %}
+          </p>
+        </div>
+      </div>
+      {# product image #} {% if product.image %}
+      <a
+        class="block"
+        href="{{ product.image.url }}"
+        target="_blank"
+      >
+        <img
+          src="{{ product.image.url }}"
+          alt="{{ product.name }}"
+          class="mx-auto"
+          width="380"
+          height="380"
+        />
+      </a>
+      {% else %}
+      <img
+        src="{{ MEDIA_URL}}no-image.svg"
+        alt="{{ product.name }}"
+        class="mx-auto"
+        width="380"
+        height="380"
+      />
+      {% endif %}
+    </div>
+    <div class="md:hidden">
+      <h2 class="mt-24 space-y-4">
+        <span class="block text-lg font-bold">Description</span>
+        {{ product.description }}
+      </h2>
+    </div>
+
+    {# desktop product display #}
+    <div class="hidden md:grid md:grid-cols-2 md:gap-x-16 lg:gap-x-0">
+      <div class="md:space-y-6">
+        <h1 class="md:max-w-[20ch] md:text-2xl">{{ product.name }}</h1>
+        {#Product price and rating #}
+        <div class="md:space-y-3">
+          <p class="md:block md:text-lg md:font-bold">€{{ product.price }}</p>
+          {% if product.rating %}
+          <div class="md:flex md:items-center md:gap-x-1">
+            <svg
+              aria-hidden="true"
+              class="h-4 w-4"
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="currentColor"
+                d="m8 18l4-3.05L16 18l-1.5-4.95l4-2.85h-4.9L12 5l-1.6 5.2H5.5l4 2.85L8 18Zm4 4q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Z"
+              ></path>
+            </svg>
+
+            <p
+              aria-label="product rating"
+              class="md:text-sm"
+            >
+              {% if product.rating %} {{ product.rating }} / 5 {% else %} No
+              rating yet {% endif %}
+            </p>
+          </div>
+
+          {% endif %}
+        </div>
+
+        {% if product.image %}
+        <a
+          href="{{ product.image.url }}"
+          target="_blank"
+          class="md:block"
+        >
+          <img
+            src="{{ product.image.url }}"
+            alt="{{ product.name }}"
+            class="md:mr-auto"
+            width="380"
+            height="380"
+          />
+        </a>
+        {% else %}
+        <img
+          src="{{ MEDIA_URL}}no-image.svg"
+          alt="{{ product.name }}"
+          class="md:mr-auto"
+          width="380"
+          height="380"
+        />
+        {% endif %}
+      </div>
+      <div class="md:mt-40">
+        <h2>
+          <span class="md:text-xl">Description</span><br />
+          {{ product.description }}
+        </h2>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}
