@@ -1,6 +1,8 @@
+from django.urls import reverse
+
 def navigation_lists(request):
     navigation_list = [
-        {'name': 'All products', 'url': '#',
+        {'name': 'All products', 'url': reverse('products'),
          'sublist': [
              {'name': 'By price', 'url': '#'},
              {'name': 'By rating', 'url': '#'},
