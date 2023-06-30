@@ -6,8 +6,17 @@ from django.views.generic import TemplateView
 
 from .models import Product, Category
 
-
-# Create your views here.
+# Sort options for products
+sort_options = {
+    'price_asc': 'Price (low to high)',
+    'price_desc': 'Price (high to low)',
+    'rating_asc': 'Rating (low to high)',
+    'rating_desc': 'Rating (high to low)',
+    'name_asc': 'Name (A-Z)',
+    'name_desc': 'Name (Z-A)',
+    'category_asc': 'Category (A-Z)',
+    'category_desc': 'Category (Z-A)',
+}
 
 
 class AllProductsView(TemplateView):
@@ -63,7 +72,8 @@ class AllProductsView(TemplateView):
             search_term=query,
             search_results=search_results,
             current_categories=categories,
-            current_sorting=current_sorting
+            current_sorting=current_sorting,
+            sort_options=sort_options
         )
         return self.render_to_response(context)
 

@@ -12,36 +12,45 @@
     <div class="flex justify-center gap-x-2">
       {% for c in current_categories %}
       <a
-        class="block rounded border border-amber-500 px-4 py-2 hover:bg-amber-400 transition-colors"
+        class="block rounded border border-amber-500 px-4 py-2 transition-colors hover:bg-amber-400"
         href="{% url 'products' %}?category={{ c.name }}"
       >
         {{ c.friendly_name }}
       </a>
       {% endfor %}
     </div>
-  <div class="flex justify-between items-start">
-    <div>
-      <p>
-        {% if search_term or current_categories or current_sorting != 'None_None' %}
-          <span class="small"><a href="{% url 'products' %}">Back to all products</a> | </span>
-        {% endif %}
-        {{ products|length }} Products{% if search_term %} found for <strong>"{{ search_term }}"</strong>{% endif %}
-      </p>
+    <div class="flex items-start justify-between">
+      <div>
+        <!-- prettier-ignore -->
+        <p>
+          {% if search_term or current_categories or current_sorting != 'None_None' %}
+          <span><a href="{% url 'products' %}">Back to all products</a> | </span>
+          {% endif %} {{ products|length }} Products{% if search_term %} found
+          for <strong>"{{ search_term }}"</strong>{% endif %}
+        </p>
+      </div>
+      {# select filter #}
+      <label
+        class="sr-only"
+        for="sort-selector"
+        >Sort by:</label
+      >
+      <select
+        id="sort-selector"
+        class="rounded border border-gray-800 py-2 pl-2"
+      >
+        <option
+          value=""
+          selected
+        >
+          Sort by
+        </option>
+        {% for key, value in sort_options.items %}
+          <!-- prettier-ignore -->
+          <option  value="{{ key }}" {% if current_sorting == key %} selected {% endif %}>{{ value }}</option>
+         {% endfor %}
+      </select>
     </div>
-    {# select filter #}
-    <label class="sr-only" for="sort-selector">Sort by:</label>
-    <select id="sort-selector" class=" rounded border border-gray-800 pl-2 py-2">
-      <option value="reset" {% if current_sorting == 'None_None' %}selected{% endif %}>Sort by...</option>
-      <option value="price_asc" {% if current_sorting == 'price_asc' %}selected{% endif %}>Price (low to high)</option>
-      <option value="price_desc" {% if current_sorting == 'price_desc' %}selected{% endif %}>Price (high to low)</option>
-      <option value="rating_asc" {% if current_sorting == 'rating_asc' %}selected{% endif %}>Rating (low to high)</option>
-      <option value="rating_desc" {% if current_sorting == 'rating_desc' %}selected{% endif %}>Rating (high to low)</option>
-      <option value="name_asc" {% if current_sorting == 'name_asc' %}selected{% endif %}>Name (A-Z)</option>
-      <option value="name_desc" {% if current_sorting == 'name_desc' %}selected{% endif %}>Name (Z-A)</option>
-      <option value="category_asc" {% if current_sorting == 'category_asc' %}selected{% endif %}>Category (A-Z)</option>
-      <option value="category_desc" {% if current_sorting == 'category_desc' %}selected{% endif %}>Category (Z-A)</option>
-    </select>
-  </div>
   </section>
 
   <section
@@ -130,4 +139,27 @@
     {% endfor %}
   </section>
 </main>
+{% endblock %} {% block postload_js %} {{ block.super }}
+<script type="text/javascript">
+  const sortSelect = document.querySelector('#sort-selector')
+
+  sortSelect.addEventListener('change', function () {
+    let currentUrl = new URL(window.location)
+    let selectedValue = this.value
+
+    if (selectedValue !== 'reset') {
+      let sort = selectedValue.split('_')[0]
+      let direction = selectedValue.split('_')[1]
+      currentUrl.searchParams.set('sort', sort)
+      currentUrl.searchParams.set('direction', direction)
+
+      window.location.replace(currentUrl)
+    } else {
+      currentUrl.searchParams.delete('sort')
+      currentUrl.searchParams.delete('direction')
+
+      window.location.replace(currentUrl)
+    }
+  })
+</script>
 {% endblock %}
