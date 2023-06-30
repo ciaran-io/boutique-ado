@@ -30,6 +30,9 @@ class AllProductsView(TemplateView):
                 sortkey = 'lower_name'
                 products = products.annotate(lower_name=Lower('name'))
 
+            if sortkey == 'category':
+                sortkey = 'category__name'
+
             if direction := request.GET.get('direction'):
                 direction = direction
                 if direction == 'desc':
