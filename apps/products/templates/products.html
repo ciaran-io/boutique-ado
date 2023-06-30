@@ -7,61 +7,126 @@
 {% endblock %} {% block content %}
 
 <main class="container mt-24 space-y-12">
-  <h1 class="text-center text-4xl">Products</h1>
+  <section class="space-y-8">
+    <h1 class="text-center text-4xl">Products</h1>
+    <div class="flex justify-center gap-x-2">
+      {% for c in current_categories %}
+      <a
+        class="block rounded border border-amber-500 px-4 py-2 hover:bg-amber-400 transition-colors"
+        href="{% url 'products' %}?category={{ c.name }}"
+      >
+        {{ c.friendly_name }}
+      </a>
+      {% endfor %}
+    </div>
+  <div class="flex justify-between items-start">
+    <div>
+      <p>
+        {% if search_term or current_categories or current_sorting != 'None_None' %}
+          <span class="small"><a href="{% url 'products' %}">Back to all products</a> | </span>
+        {% endif %}
+        {{ products|length }} Products{% if search_term %} found for <strong>"{{ search_term }}"</strong>{% endif %}
+      </p>
+    </div>
+    {# select filter #}
+    <label class="sr-only" for="sort-selector">Sort by:</label>
+    <select id="sort-selector" class=" rounded border border-gray-800 pl-2 py-2">
+      <option value="reset" {% if current_sorting == 'None_None' %}selected{% endif %}>Sort by...</option>
+      <option value="price_asc" {% if current_sorting == 'price_asc' %}selected{% endif %}>Price (low to high)</option>
+      <option value="price_desc" {% if current_sorting == 'price_desc' %}selected{% endif %}>Price (high to low)</option>
+      <option value="rating_asc" {% if current_sorting == 'rating_asc' %}selected{% endif %}>Rating (low to high)</option>
+      <option value="rating_desc" {% if current_sorting == 'rating_desc' %}selected{% endif %}>Rating (high to low)</option>
+      <option value="name_asc" {% if current_sorting == 'name_asc' %}selected{% endif %}>Name (A-Z)</option>
+      <option value="name_desc" {% if current_sorting == 'name_desc' %}selected{% endif %}>Name (Z-A)</option>
+      <option value="category_asc" {% if current_sorting == 'category_asc' %}selected{% endif %}>Category (A-Z)</option>
+      <option value="category_desc" {% if current_sorting == 'category_desc' %}selected{% endif %}>Category (Z-A)</option>
+    </select>
+  </div>
+  </section>
 
   <section
     id="products"
-    class="grid grid-cols-[repeat(auto-fill,_minmax(200px,_1fr))] gap-x-16 gap-y-16"
+    class="grid grid-cols-[repeat(auto-fill,_minmax(200px,_1fr))] gap-x-16 gap-y-16 overflow-clip"
   >
     {% for product in products %}
-    <a href="{% url 'product_detail' product.id %}">
-      <div class="space-y-3">
-        {# product image #} {% if product.image %}
-        <img
-          src="{{ product.image.url }}"
-          alt="{{ product.name }}"
-          class="mx-auto"
-          width="380"
-          height="380"
-        />
-        {% else %}
-        <img
-          src="{{ MEDIA_URL }}no-image.svg"
-          alt="{{ product.name }}"
-          class="mx-auto"
-          width="380"
-          height="380"
-        />
-        {% endif %} {# product name, price, rating #}
-        <div class="space-y-2">
-          <h3>{{ product.name }}</h3>
-          <div class="space-y-1">
-            <p class="text-lg font-bold">€{{ product.price }}</p>
-            <div class="flex items-center gap-x-1">
-              <svg
-                aria-hidden="true"
-                class="h-4 w-4"
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="currentColor"
-                  d="m8 18l4-3.05L16 18l-1.5-4.95l4-2.85h-4.9L12 5l-1.6 5.2H5.5l4 2.85L8 18Zm4 4q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Z"
-                ></path>
-              </svg>
-              <p
-                aria-label="product rating"
-                class="block text-sm"
-              >
-              {% if product.rating %} {{ product.rating }} / 5 {% else %} No rating yet {% endif %}
-              </p>
+    <div>
+      <a href="{% url 'product_detail' product.id %}">
+        <div class="space-y-3">
+          {# product image #} {% if product.image %}
+          <img
+            src="{{ product.image.url }}"
+            alt="{{ product.name }}"
+            class="mx-auto"
+            width="380"
+            height="380"
+          />
+          {% else %}
+          <img
+            src="{{ MEDIA_URL }}no-image.svg"
+            alt="{{ product.name }}"
+            class="mx-auto"
+            width="380"
+            height="380"
+          />
+          {% endif %} {# product name, category price, rating #}
+          <div class="space-y-2">
+            <h3>{{ product.name }}</h3>
+            <div class="space-y-3">
+              <p class="text-lg font-bold">€{{ product.price }}</p>
+              {% if product.category %}
+              <div class="flex items-center gap-x-1">
+                <svg
+                  class="h-4 w-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 512 512"
+                >
+                  <path
+                    fill="#929292"
+                    d="M448 183.8v-123A44.66 44.66 0 0 0 403.29 16H280.36a30.62 30.62 0 0 0-21.51 8.89L13.09 270.58a44.86 44.86 0 0 0 0 63.34l117 117a44.84 44.84 0 0 0 63.33 0l245.69-245.61A30.6 30.6 0 0 0 448 183.8ZM352 144a32 32 0 1 1 32-32a32 32 0 0 1-32 32Z"
+                  ></path>
+                  <path
+                    fill="#929292"
+                    d="M496 64a16 16 0 0 0-16 16v127.37L218.69 468.69a16 16 0 1 0 22.62 22.62l262-262A29.84 29.84 0 0 0 512 208V80a16 16 0 0 0-16-16Z"
+                  ></path>
+                </svg>
+                <a
+                  class="block"
+                  href="{% url 'products' %}?category={{ product.category.name }}"
+                >
+                  {{ product.category.friendly_name }}
+                </a>
+              </div>
+              {% endif %}
+              <div class="flex items-center gap-x-1">
+                <svg
+                  aria-hidden="true"
+                  class="h-4 w-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="m8 18l4-3.05L16 18l-1.5-4.95l4-2.85h-4.9L12 5l-1.6 5.2H5.5l4 2.85L8 18Zm4 4q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Z"
+                  ></path>
+                </svg>
+
+                <p
+                  aria-label="product rating"
+                  class="block text-sm"
+                >
+                  {% if product.rating %} {{ product.rating }} / 5 {% else %} No
+                  rating yet {% endif %}
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </a>
+      </a>
+    </div>
     {% endfor %}
   </section>
 </main>
