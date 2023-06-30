@@ -6,7 +6,7 @@
   <li
     aria-expanded="false"
     aria-controls="{{ item.name|slugify }}-sublist"
-    class="group relative pt-3 decoration-amber-300 md:px-4 md:py-4 md:pt-0 md:pb-8 md:hover:underline"
+    class="group relative pt-3 decoration-amber-300 md:px-4 md:py-4 md:pb-8 md:pt-0 md:hover:underline"
   >
     <a
       class="block font-semibold"
@@ -16,14 +16,14 @@
     {# Sub nav links #} {% if item.sublist %}
     <div
       id="{{ item.name|slugify }}-sublist"
-      class="md:invisible md:absolute md:left-0 md:top-0 md:mt-8 md:w-[200px] focus:visible
-      group-hover:visible md:space-y-2 md:rounded md:bg-white md:pt-4 md:px-4 md:pb-12"
+      class="focus:visible group-hover:visible md:invisible md:absolute md:left-0 md:top-0 md:mt-8 md:w-[200px] md:space-y-2 md:rounded md:bg-white md:px-4 md:pb-12 md:pt-4"
       aria-labelledby="{{ item.name|slugify }}-links"
     >
       {% for subitem in item.sublist %}
+
       <a
-        class="block md:hover:underline decoration-gray-700 underline-offset-4"
-        href="{{ subitem.url }}"
+        class="block decoration-gray-700 underline-offset-4 md:hover:underline"
+        href="{% url 'products' %}?{% if item.name == 'All products' %}sort={{ subitem.url }}{% elif subitem %}category={{ subitem.url }}{% endif %}"
       >
         {{ subitem.name }}
       </a>
