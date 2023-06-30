@@ -6,13 +6,39 @@
 </div>
 {% endblock %} {% block content %}
 
-<main class="container mt-24 space-y-12">
+<main class="container mt-24 space-y-12 lg:max-w-screen-lg">
   <section>
     {# mobile product display #}
     <div class="space-y-6 md:hidden">
       <h1 class="max-w-[20ch] text-2xl">{{ product.name }}</h1>
       <div class="flex gap-x-2">
         <p class="block text-lg font-bold">€{{ product.price }}</p>
+        {% if product.category %}
+        <div class="flex items-center gap-x-1">
+          <svg
+            class="h-4 w-4"
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            viewBox="0 0 512 512"
+          >
+            <path
+              fill="#929292"
+              d="M448 183.8v-123A44.66 44.66 0 0 0 403.29 16H280.36a30.62 30.62 0 0 0-21.51 8.89L13.09 270.58a44.86 44.86 0 0 0 0 63.34l117 117a44.84 44.84 0 0 0 63.33 0l245.69-245.61A30.6 30.6 0 0 0 448 183.8ZM352 144a32 32 0 1 1 32-32a32 32 0 0 1-32 32Z"
+            ></path>
+            <path
+              fill="#929292"
+              d="M496 64a16 16 0 0 0-16 16v127.37L218.69 468.69a16 16 0 1 0 22.62 22.62l262-262A29.84 29.84 0 0 0 512 208V80a16 16 0 0 0-16-16Z"
+            ></path>
+          </svg>
+          <a
+            class="block"
+            href="{% url 'products' %}?category={{ product.category.name }}"
+          >
+            {{ product.category.friendly_name }}
+          </a>
+        </div>
+        {% endif %}
         <div class="flex items-center gap-x-1">
           <svg
             aria-hidden="true"
@@ -68,14 +94,45 @@
     </div>
 
     {# desktop product display #}
-    <div class="hidden md:grid md:grid-cols-2 md:gap-x-16 lg:gap-x-0">
+    <div
+      class="hidden md:grid md:grid-cols-2 md:gap-x-8 lg:grid-cols-[2fr,1fr]"
+    >
       <div class="md:space-y-6">
         <h1 class="md:max-w-[20ch] md:text-2xl">{{ product.name }}</h1>
-        {#Product price and rating #}
+        {#Product price and rating, category #}
         <div class="md:space-y-3">
           <p class="md:block md:text-lg md:font-bold">€{{ product.price }}</p>
-          {% if product.rating %}
+           <div class="flex gap-x-2 items-center">
+             {% if product.category %}
+               <div class="flex items-center gap-x-1">
+                 <svg
+                   class="h-4 w-4"
+                   xmlns="http://www.w3.org/2000/svg"
+                   width="32"
+                   height="32"
+                   viewBox="0 0 512 512"
+                 >
+                   <path
+                     fill="#929292"
+                     d="M448 183.8v-123A44.66 44.66 0 0 0 403.29 16H280.36a30.62 30.62 0 0 0-21.51 8.89L13.09 270.58a44.86 44.86 0 0 0 0 63.34l117 117a44.84 44.84 0 0 0 63.33 0l245.69-245.61A30.6 30.6 0 0 0 448 183.8ZM352 144a32 32 0 1 1 32-32a32 32 0 0 1-32 32Z"
+                   ></path>
+                   <path
+                     fill="#929292"
+                     d="M496 64a16 16 0 0 0-16 16v127.37L218.69 468.69a16 16 0 1 0 22.62 22.62l262-262A29.84 29.84 0 0 0 512 208V80a16 16 0 0 0-16-16Z"
+                   ></path>
+                 </svg>
+                 <a
+                   class="block"
+                   href="{% url 'products' %}?category={{ product.category.name }}"
+                 >
+                   {{ product.category.friendly_name }}
+                 </a>
+               </div>
+             {% endif %}
+
+             {% if product.rating %}
           <div class="md:flex md:items-center md:gap-x-1">
+           </div>
             <svg
               aria-hidden="true"
               class="h-4 w-4"
