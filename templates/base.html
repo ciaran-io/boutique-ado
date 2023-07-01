@@ -12,7 +12,7 @@
     />
     <meta
       http-equiv="X-UA-Compatible"
-      content="ie=edge"
+    content="ie=edge"
     />
     {% endblock %}
     <!-- prettier-ignore -->
@@ -118,7 +118,7 @@
               </div>
               {# Shopping link #}
               <div>
-                <a href=""></a>
+                <a href="{% url 'cart' %}">
                 <img
                   src="{% static 'icons/bag.svg' %}"
                   alt="shopping bag icon"
@@ -126,6 +126,7 @@
                   width="28"
                   loading="eager"
                 >
+                </a>
               </div>
             </div>
           </div>
@@ -141,6 +142,7 @@
           <div class="md:hidden">{% include 'partials/searchform.html' %}</div>
         </nav>
       </div>
+      <div class="bg-black text-center uppercase text-white py-2"><p>free delivery on orders over €{{ free_delivery_threshold }}</p></div>
     </header>
 
     <!-- prettier-ignore -->
