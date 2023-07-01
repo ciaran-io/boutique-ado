@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.apple',
     'apps.home',
     'apps.products',
+    'apps.cart',
 ]
 
 # Provider specific settings
@@ -109,7 +110,8 @@ TEMPLATES = [
                 'django.template.context_processors.request', # required by allauth
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'apps.home.context_processors.navigation_lists'
+                'apps.home.context_processors.navigation_lists',
+                'apps.cart.context_processors.cart_contents'
             ],
         },
     },
@@ -174,6 +176,10 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Cart settings
+FREE_DELIVERY_THRESHOLD = 50
+STANDARD_DELIVERY_COST = 5
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
