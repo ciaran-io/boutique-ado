@@ -1,5 +1,3 @@
-from django.urls import reverse
-
 # Define the categories to be used in the navigation menu
 # Clothing menu items
 all_clothing_categories = ['activewear', 'essentials', 'jeans', 'shirts']
@@ -31,7 +29,7 @@ def navigation_lists(request):
         # All products menu & sub-menu
         {
             'name': 'All products',
-            'url': '#',
+            'url': None,
             'sublist': create_sublist([
                 ('By Price', 'price&direction=asc'),
                 ('By Rating', 'rating&direction=desc'),
@@ -41,7 +39,7 @@ def navigation_lists(request):
         # Clothing menu & sub-menu
         {
             'name': 'Clothing',
-            'url': '#',
+            'url': 'clothing',
             'sublist': create_sublist([
                 ('Activeware & Essentials',
                  f'{active_essentials_categories_query}'),
@@ -53,7 +51,7 @@ def navigation_lists(request):
         # Homeware menu & sub-menu
         {
             'name': 'Homeware',
-            'url': '#',
+            'url': 'homeware',
             'sublist': create_sublist([
                 ('Bed & Bath', 'bed_bath'),
                 ('Kitchen & Dining', 'kitchen_dining'),
@@ -63,7 +61,7 @@ def navigation_lists(request):
         # Special offers menu & sub-menu
         {
             'name': 'Special offers',
-            'url': '#',
+            'url': 'special_offers',
             'sublist': create_sublist([
                 ('New Arrivals', 'new_arrivals'),
                 ('Deals', 'deals'),
