@@ -1,0 +1,43 @@
+<div class="overflow-x-auto ">
+{# FIXME: make table responsive#}
+  <table
+    class="border-separate table-auto border border-slate-200 rounded p-4 border-spacing-y-4 mx-auto	"
+  >
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th></th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody >
+      {% for item in cart_items %}
+      <tr class=" [&_td]:p-8 [&_td]:align-top " >
+        <td>
+          <img
+            height="180"
+            width="180"
+            src="{{ item.product.image.url }}"
+            alt="{{ product.name }}"
+          />
+        </td>
+        <td>
+          <p class="font-bold">{{ item.product.name }}</p>
+          <p class="text-sm opacity-50 uppercase">sku: {{ item.product.sku }}</p>
+        </td>
+        <td>
+          <p class="font-bold">€ {{ item.product.price }}</p>
+        </td>
+        <td>
+          <p class="font-bold">{{ item.quantity }}</p>
+        </td>
+        <td>
+          <p class="font-bold">€ {{ item.product.price }}</p>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
