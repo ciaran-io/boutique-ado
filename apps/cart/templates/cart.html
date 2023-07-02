@@ -3,16 +3,14 @@
 <div class="container"></div>
 
 {% endblock %} {% block content %}
-<div class="container mt-12">
-  <h1 class="border-b text-center text-2xl">You're Cart</h1>
+<div class="container mt-12 space-y-12">
+  <h1 class="text-center text-2xl">You're Cart</h1>
+  <main>
+    {% if cart_items %} {% include 'partials/product-table.html' %} {% else %}
+    <div class="text-center">
+      <p>There are no items in your cart</p>
+    </div>
+    {% endif %}
+  </main>
 </div>
-<main>
-  {% if bag_items %}
-  <div>Items</div>
-  {% else %}
-  <div class="text-center">
-    <p>There are no items in your cart</p>
-  </div>
-  {% endif %}
-</main>
 {% endblock %}
