@@ -117,15 +117,18 @@
                 >
               </div>
               {# Shopping link #}
-              <div>
-                <a href="{% url 'cart' %}">
+              <div class="relative">
+                <a aria-label="view cart" class="" href="{% url 'cart' %}">
                 <img
                   src="{% static 'icons/bag.svg' %}"
                   alt="shopping bag icon"
+                  class="relative"
                   height="28"
                   width="28"
                   loading="eager"
+                  aria-hidden="true"
                 >
+                  <span aria-label="items in cart" class="text-sm absolute left-[10px] top-[9px]">{{ cart_items|length }}</span>
                 </a>
               </div>
             </div>
