@@ -86,11 +86,12 @@
       />
       {% endif %}
     </div>
-    <div class="md:hidden">
+    <div class="md:hidden space-y-8">
       <h2 class="mt-24 space-y-4">
         <span class="block text-lg font-bold">Description</span>
         {{ product.description }}
       </h2>
+      {% include 'partials/form-cart.html' %}
     </div>
 
     {# desktop product display #}
@@ -183,11 +184,12 @@
         />
         {% endif %}
       </div>
-      <div class="md:mt-40">
+      <div class="md:mt-40 space-y-4">
         <h2>
           <span class="md:text-xl">Description</span><br />
           {{ product.description }}
         </h2>
+        {% include 'partials/form-cart.html' %}
       </div>
     </div>
   </section>
