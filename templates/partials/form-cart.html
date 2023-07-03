@@ -1,5 +1,25 @@
 <form action="{% url 'add_to_cart' product.id %}" method="post">
   {% csrf_token %}
+  <div>
+    {% with product.has_sizes as s %} {% if s %}
+    <label for="product_size">Size</label>
+    <select
+      class="w-full rounded border py-2 pl-2"
+      name="product_size"
+      id="product_size"
+    >
+      {% for size in sizes %}
+        <option value="{{ size }}">{{ size }}</option>
+      {% endfor %}
+    </select>
+    {% else %}
+    <input
+      type="hidden"
+      name="size"
+      value="N/A"
+    />
+    {% endif %} {% endwith %}
+  </div>
   <div class="flex gap-x-2">
     <div >
       <label>
