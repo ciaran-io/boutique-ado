@@ -18,6 +18,8 @@ sort_options = {
     'category_desc': 'Category (Z-A)',
 }
 
+sizes = ['xs', 's', 'm', 'l', 'xl']
+
 
 class AllProductsView(TemplateView):
     """ A view to show all products, including sorting and search queries"""
@@ -73,7 +75,8 @@ class AllProductsView(TemplateView):
             search_results=search_results,
             current_categories=categories,
             current_sorting=current_sorting,
-            sort_options=sort_options
+            sort_options=sort_options,
+            sizes=sizes
         )
         return self.render_to_response(context)
 
@@ -86,4 +89,5 @@ class ProductDetailView(TemplateView):
         context = super().get_context_data(**kwargs)
         product = get_object_or_404(Product, pk=kwargs['product_id'])
         context['product'] = product
+        context['sizes'] = sizes
         return context
