@@ -5,16 +5,24 @@ def add_to_cart(request, item_id):
     """ Add a quantity of the specified product to the shopping cart """
 
     quantity = int(request.POST.get('quantity'))
-    cart = request.session.get('cart', {})
-    cart[item_id] = cart.get(item_id, quantity)
+    redirect_url = request.POST.get('redirect_url')
+    size = None
+    if 'product_size' in request.POST:
+        size = request.POST['product_size']
 
-    if cart[item_id] == quantity:
-        cart[item_id] += quantity
+    cart = request.session.get('cart', {})
+
+    if item_id in cart:
+        if size:
+            cart[item_id]['items_by_size'].setdefault(size, 0)
+            cart[item_id]['items_by_size'][size] += quantity
+        else:
+            cart[item_id] += quantity
     else:
-        cart[item_id] = quantity
+        if size:
+            cart[item_id] = {'items_by_size': {size: quantity}}
+        else:
+            cart[item_id] = quantity
 
     request.session['cart'] = cart
-
-    redirect_url = request.POST.get('redirect_url')
-
     return redirect(redirect_url)
