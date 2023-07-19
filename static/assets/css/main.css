@@ -12,6 +12,43 @@
     }
 }
 
+@layer components {
+    /* Alert box*/
+    div[role="alert"] {
+
+        @apply
+        top-[100px]
+        right-[100px]
+        border-t-4
+        fixed
+        z-50
+        bg-white
+        shadow-lg
+        rounded-lg
+        p-4 w-96;
+
+       &[data-alert-type="alert-success"]  {
+            @apply border-alert-success ;
+        }
+
+        &[data-alert-type="alert-danger"]  {
+            @apply border-alert-error ;
+        }
+
+        &[data-alert-type="alert-warning"]  {
+            @apply border-alert-warning ;
+        }
+
+        &[data-alert-type="alert-info"]  {
+            @apply border-alert-info ;
+        }
+
+        &[data-alert-type="alert-secondary"]  {
+            @apply border-alert-secondary ;
+        }
+    }
+}
+
 /* Mobile menu*/
 #mobile-menu[menu-visible='true'] {
   @apply left-0;
