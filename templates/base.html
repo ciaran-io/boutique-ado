@@ -147,11 +147,36 @@
       </div>
       <div class="bg-black text-center uppercase text-white py-2"><p>free delivery on orders over €{{ free_delivery_threshold }}</p></div>
     </header>
-
     <!-- prettier-ignore -->
-    {% if messages %} {% endif %}
+    {% if messages %}
+    {% for message in messages %}
+      {% with message.level as level %}
+      {% if level == 25 %}
+        {% include 'partials/toast.html' %}
+      {% else %}
+        {% include 'partials/toast-error.html' %}
+      {% endif %}
+      {% endwith %}
+
+    {% endfor %}
+   {% endif %}
+
     {% block page_header %} {% endblock %}
     {% block content %}{% endblock %}
-    {% block postload_js %}{% endblock %}
+    {% block postload_js %}
+      <script>
+        const toast = document.querySelectorAll('div[role="alert"]');
+
+        if (toast) {
+          toast.forEach((item) => {
+            const close = item.querySelector('button');
+            close.addEventListener('click', () => item.classList.add('hidden'));
+            setTimeout(() => {
+              item.classList.add('hidden');
+            }, 5000);
+          });
+        }
+      </script>
+    {% endblock %}
   </body>
 </html>
