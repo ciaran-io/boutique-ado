@@ -13,11 +13,24 @@ def add_to_cart(request, item_id):
     cart = request.session.get('cart', {})
 
     if item_id in cart:
-        if size:
-            cart[item_id]['items_by_size'].setdefault(size, 0)
-            cart[item_id]['items_by_size'][size] += quantity
+    if size:
+        if item_id in list(cart.keys()):
+            if size in cart[item_id]['items_by_size'].keys():
+                cart[item_id]['items_by_size'][size] += quantity
+            else:
+                cart[item_id]['items_by_size'][size] = quantity
         else:
+            cart[item_id] = {'items_by_size': {size: quantity}}
+    else:
+        if item_id in list(cart.keys()):
             cart[item_id] += quantity
+        else:
+            cart[item_id] = quantity
+
+    request.session['cart'] = cart
+    return redirect(redirect_url)
+
+
     else:
         if size:
             cart[item_id] = {'items_by_size': {size: quantity}}
