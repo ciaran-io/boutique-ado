@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    :root {
+        --alert-success: 140 50% 64%;
+        --alert-error: 6 78% 57%;
+        --alert-warning: 48 89% 50%;
+        --alert-info: 204 70% 53%;
+        --alert-secondary: 184 9% 62%;
+    }
+}
+
 /* Mobile menu*/
 #mobile-menu[menu-visible='true'] {
   @apply left-0;
