@@ -115,11 +115,4 @@ def adjust_cart(request, item_id):
     request.session['cart'] = cart
     return redirect(reverse('cart'))
 
-    else:
-        if size:
-            cart[item_id] = {'items_by_size': {size: quantity}}
-        else:
-            cart[item_id] = quantity
 
-    request.session['cart'] = cart
-    return redirect(redirect_url)
