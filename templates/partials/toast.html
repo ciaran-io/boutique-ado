@@ -1,0 +1,53 @@
+{% load cart_tags %}
+
+<div
+  role="alert"
+  data-alert-type="{{ message.tags }}"
+>
+  <div class="flex justify-between">
+    <p class="capitalize font-semibold px-2 pt-2">{{ message.tags|split_word:"-" }}!</p>
+    <button aria-label="close alert" class="text-lg rounded-full px-[0.7rem] py-[0.2rem] border hover:bg-amber-400 w-max h-max">x</button>
+  </div>
+
+  <div
+    class="mx-auto mt-4 w-auto rounded bg-white p-3 text-center text-sm shadow space-y-4"
+  >
+    <p>{{ message }}</p>
+
+    {# freed deliver message #}
+    {% if free_delivery_delta %}
+      <div class="rounded bg-amber-400 py-2 text-sm font-semibold text-sm">
+          <p>Spend €{{ free_delivery_delta }} more to get FREE DELIVERY!</p>
+      </div>
+    {% endif %}
+
+    <div class="h-64 space-y-8 overflow-y-scroll">
+      <p class="text-left">Total items: ({{ product_count }})</p>
+      {% for item in cart_items %} {# Product image & details #}
+      <div class="grid grid-cols-[1fr,2fr]">
+        <img
+          width="65"
+          height="65"
+          src="{{ item.product.image.url }}"
+          alt="{{ item.product.name }}"
+        />
+        <div class="space-y-1 text-left">
+          <p class="font-semibold">{{ item.product.name }}</p>
+          <p>
+            {% if item.product.has_sizes %} Size:{{ item.size|upper }} {% else%}N/A{% endif %}
+          </p>
+          <p>Qty: {{ item.quantity }}</p>
+          <p>€ {{ item.product.price }}</p>
+        </div>
+      </div>
+      {% endfor %}
+      <div class="flex justify-between font-semibold">
+        <p>Subtotal</p>
+        <p>€ {{ total }}</p>
+      </div>
+        <div class="rounded bg-black py-4 !text-white font-bold">
+          <a href="#">Checkout</a>
+        </div>
+    </div>
+  </div>
+</div>
