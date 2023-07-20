@@ -1,0 +1,79 @@
+{% extends "base.html" %} {% load static %} {% block page_header %}
+{%endblock%} {% block content %} {% load cart_tags %}
+<div class="container mt-12 space-y-12">
+  <h1 class="text-center text-2xl">You're Cart</h1>
+  <main>
+    <section class="grid md:grid-cols-2 md:gap-x-6">
+      <div class="w-full">
+        <h2 class="text-left text-2xl">Checkout</h2>
+        <form
+          action="{% url 'checkout' %}"
+          method="POST"
+          id="payment-form"
+          class="[&_input]:w-h-max space-y-12 rounded-md border-2 p-6 [&_div]:rounded-md [&_div]:border [&_input]:w-full [&_input]:rounded-md [&_input]:border [&_input]:border-gray-400 [&_input]:p-2"
+        >
+          {% csrf_token %}
+
+          <fieldset class="space-y-4">
+            <legend>Details</legend>
+            {{ order_form.full_name }} {{ order_form.email }}
+          </fieldset>
+
+          <fieldset class="space-y-4">
+            <legend>Delivery</legend>
+            {% for field in order_form %}
+              {% if field.name != 'full_name' and field.name != 'email' %} {{ field }} {% endif %}
+            {% endfor %}
+          </fieldset>
+        </form>
+      </div>
+      <section class="space-y-6">
+      <h3>Order summary ({{ product_count }})</h3>
+        {% for item in cart_items %}
+        <div class="grid grid-cols-[2fr,1fr]">
+          <div>
+            <a href="{% url 'product_detail' item.product.id %}">
+              {% if item.product.image %}
+              <img
+                width="100"
+                height="100"
+                src="{{ item.product.image.url }}"
+                alt="{{ product.name }}"
+              />
+              {% else %}
+              <img
+                width="100"
+                height="100"
+                src="{{ MEDIA_URL }}no-image.svg"
+                alt="{{ product.name }}"
+              />
+              {% endif %}
+            </a>
+          </div>
+
+          <div>
+            <p class="my-0"><strong>{{ item.product.name }}</strong></p>
+            <p class="small my-0">
+              Size: {% if item.product.has_sizes %}{{ item.size|upper }}
+            {% else%}N/A{% endif %}
+            </p>
+            <p class="small text-muted my-0">Qty: {{ item.quantity }}</p>
+          </div>
+        </div>
+
+        <div class="col-3 text-right">
+          <p class="small text-muted my-0">
+            ${{ item.product.price | calculate_total_amount:item.quantity }}
+          </p>
+        </div>
+        {% endfor %}
+      <div class="grid justify-end">
+        <p>Order Total: € {{ total }}</p>
+        <p>Delivery: € {{ delivery }}</p>
+        <p class="font-semibold">Grand Total: € {{ grand_total }}</p>
+      </div>
+      </section>
+    </section>
+  </main>
+</div>
+{% endblock %}
