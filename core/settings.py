@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'apps.home',
     'apps.products',
     'apps.cart',
+    'apps.checkout',
 ]
 
 # Provider specific settings
@@ -113,7 +114,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'apps.home.context_processors.navigation_lists',
-                'apps.cart.context_processors.cart_contents'
+                'apps.cart.context_processors.cart_contents',
+                "django.template.context_processors.media",
             ],
         },
     },
