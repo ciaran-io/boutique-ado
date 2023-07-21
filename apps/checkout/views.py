@@ -25,6 +25,8 @@ class CheckoutView(TemplateView):
 
         context.update({
             'order_form': order_form,
-        }
+            'stripe_public_key': 'pk_test_51NWENXHz16WjPxj2PfvHYDoyJvpFVx2mPuvPWAkKVFRvCL1gHRnFOQuENXEqdRiM7ttBdjbuDkHlKZKsKnQZkJfS00Yw6TZvpZ',
+            'client_secret': 'test client secret'
+        })
 
         return context
