@@ -5,43 +5,43 @@
 <html lang="en">
   <head>
     {% block meta %}
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
-    />
-    <meta
-      http-equiv="X-UA-Compatible"
-    content="ie=edge"
-    />
+      <meta charset="UTF-8" />
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
+      />
+      <meta
+        http-equiv="X-UA-Compatible"
+        content="ie=edge"
+      />
     {% endblock %}
     <!-- prettier-ignore -->
     {% block extra_meta %}{% endblock %}
     {% block extra_css %}{% endblock %}
-    {% block extra_js %}{% endblock %}
-
     {% vite_hmr_client %}
     {% vite_asset 'js/css-import.js' %}
     {% vite_asset 'js/main.js' %}
+    {% block extra_js %}{% endblock %}
 
+    <script src="https://js.stripe.com/v3/"></script>
     <title>Boutique Ado {% block extra_tite %}{% endblock %}</title>
   </head>
   <body>
-    <header class="bg-amber-400 text-gray-900 pt-12 space-y-8">
-      <div class="container">
-        {# Mobile menu flyout menu #}
-        <div
-          class="fixed -left-full top-0 z-10 hidden h-full w-4/5 bg-white transition-all duration-300 ease-in-out md:hidden"
-          id="mobile-menu"
-        >
-          <nav aria-label="Mobile Navigation Menu">
-            <div class="grid h-32 bg-gray-800 px-4 pt-12 text-xl text-white">
-              <span>Browse</span>
-              <span>Boutique Ado</span>
-            </div>
-            {# mobile navigation links #}
-            <div class="px-4 text-gray-800">
-              {% include 'partials/navmenu.html' %}
+  <header class="bg-amber-400 text-gray-900 pt-12 space-y-8">
+    <div class="container">
+      {# Mobile menu flyout menu #}
+      <div
+        class="fixed -left-full top-0 z-10 hidden h-full w-4/5 bg-white transition-all duration-300 ease-in-out md:hidden"
+        id="mobile-menu"
+      >
+        <nav aria-label="Mobile Navigation Menu">
+          <div class="grid h-32 bg-gray-800 px-4 pt-12 text-xl text-white">
+            <span>Browse</span>
+            <span>Boutique Ado</span>
+          </div>
+          {# mobile navigation links #}
+          <div class="px-4 text-gray-800">
+            {% include 'partials/navmenu.html' %}
             </div>
           </nav>
         </div>
@@ -164,15 +164,16 @@
     {% block page_header %} {% endblock %}
     {% block content %}{% endblock %}
     {% block postload_js %}
-      <script>
-        const toast = document.querySelectorAll('div[role="alert"]');
+
+      <script defer type="text/javascript">
+        const toast = document.querySelectorAll("div[role=\"alert\"]");
 
         if (toast) {
           toast.forEach((item) => {
-            const close = item.querySelector('button');
-            close.addEventListener('click', () => item.classList.add('hidden'));
+            const close = item.querySelector("button");
+            close?.addEventListener("click", () => item.classList.add("hidden"));
             setTimeout(() => {
-              item.classList.add('hidden');
+              item.classList.add("hidden");
             }, 5000);
           });
         }
