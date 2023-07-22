@@ -41,10 +41,9 @@ class Order(models.Model):
         accounting for delivery costs.
         """
         self.order_total = self.line_items.aggregate(
-            Sum('line_item_total'))['line_item_total_sum']
+            Sum('lineitem_total'))['lineitem_total__sum'] or 0
         if self.order_total < settings.FREE_DELIVERY_THRESHOLD:
-            self.delivery_cost = \
-                self.order_total * settings.STANDARD_DELIVERY_PERCENTAGE / 100
+            self.delivery_cost = settings.STANDARD_DELIVERY_COST
         else:
             self.delivery_cost = 0
         self.grand_total = self.order_total + self.delivery_cost
@@ -72,16 +71,16 @@ class OrderLineItem(models.Model):
     product_size = models.CharField(max_length=2, null=True,
                                     blank=True)  # XS, S, M, L, XL
     quantity = models.IntegerField(null=False, blank=False, default=0)
-    line_item_total = models.DecimalField(max_digits=6, decimal_places=2,
-                                          null=False, blank=False,
-                                          editable=False)
+    lineitem_total = models.DecimalField(max_digits=6, decimal_places=2,
+                                         null=False, blank=False,
+                                         editable=False)
 
     def save(self, *args, **kwargs):
         """
         Override the original save method to set the line item total
         and update the order total.
         """
-        self.line_item_total = self.product.price * self.quantity
+        self.lineitem_total = self.product.price * self.quantity
         super().save(*args, **kwargs)
 
     def __str__(self):
