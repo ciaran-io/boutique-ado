@@ -13,7 +13,7 @@ class CheckoutView(TemplateView):
 
     def dispatch(self, request, *args, **kwargs):
         cart = self.request.session.get('cart', {})
-        if not cart or len(cart) == 0:
+        if not cart or (cart is not None and len(cart) == 0):
             messages.error(self.request, "Your cart is empty")
             return redirect(reverse('products'))
 
