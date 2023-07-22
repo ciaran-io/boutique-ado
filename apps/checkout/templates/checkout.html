@@ -43,6 +43,19 @@
               <!-- Pass the client secret to the view so we can get the payment intent id -->
               <input type="hidden" value="{{ client_secret }}" name="client_secret">
             </fieldset>
+
+            <div class="grid grid-cols-2 gap-x-6">
+              <button
+                id="submit-button"
+                class="bg-black text-white font-semibold py-2 px-4 rounded-md shadow-md hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+                type="submit"
+              >
+                Pay Now
+              </button>
+              <a href="{% url 'cart' %}"
+                 class=" border-black font-semibold py-2 px-4 rounded-md shadow-md hover:bg-amber-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 text-center ">Back
+                to cart</a>
+            </div>
           </form>
         </div>
         <section class="space-y-6 md:mt-24">
