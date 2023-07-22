@@ -14,7 +14,7 @@
 
 @layer components {
     /* Alert box*/
-    div[role="alert"] {
+    div#header-alert[role="alert"] {
 
         @apply
         top-[100px]
