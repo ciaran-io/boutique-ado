@@ -1,11 +1,12 @@
+import stripe
 from django.contrib import messages
 from django.shortcuts import redirect, reverse
 from django.views.generic import TemplateView
 
 from .forms import OrderForm
 
-
-# Create your views here.
+stripe_public_key = settings.STRIPE_PUBLIC_KEY
+stripe_secret_key = settings.STRIPE_SECRET_KEY
 
 
 class CheckoutView(TemplateView):
@@ -23,10 +24,19 @@ class CheckoutView(TemplateView):
         context = super().get_context_data(**kwargs)
         order_form = OrderForm()
 
+        current_cart = cart_contents(self.request)
+        total = current_cart['grand_total']
+        stripe.api_key = stripe_secret_key
+        stripe_total = round(total * 100)
+        intent = stripe.PaymentIntent.create(
+            amount=stripe_total,
+            currency=settings.STRIPE_CURRENCY,
+        )
+
         context.update({
             'order_form': order_form,
-            'stripe_public_key': 'pk_test_51NWENXHz16WjPxj2PfvHYDoyJvpFVx2mPuvPWAkKVFRvCL1gHRnFOQuENXEqdRiM7ttBdjbuDkHlKZKsKnQZkJfS00Yw6TZvpZ',
-            'client_secret': 'test client secret'
+            'stripe_public_key': stripe_public_key,
+            'client_secret': intent.client_secret,
         })
 
         return context
