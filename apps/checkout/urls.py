@@ -1,6 +1,9 @@
 from django.urls import path
-from .views import CheckoutView
+
+from .views import CheckoutSuccessView, CheckoutView
 
 urlpatterns = [
     path('', CheckoutView.as_view(), name='checkout'),
+    path('checkout_success/<order_number>', CheckoutSuccessView.as_view(),
+         name='checkout_success'),
 ]

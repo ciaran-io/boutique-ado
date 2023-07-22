@@ -1,8 +1,13 @@
 import stripe
+from django.conf import settings
 from django.contrib import messages
+from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect, reverse
 from django.views.generic import TemplateView
 
+from apps.cart.context_processors import cart_contents
+from apps.checkout.models import Order, OrderLineItem
+from apps.products.models import Product
 from .forms import OrderForm
 
 stripe_public_key = settings.STRIPE_PUBLIC_KEY
