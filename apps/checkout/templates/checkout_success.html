@@ -1,15 +1,55 @@
-{% extends "base.html" %}
-{% load static %}
-{% block content %}
+{% extends "base.html" %} {% load static %} {% block content %}
 
-<div>
-  <h1>
-    Thank you for your order!
-  </h1>
-  <p>
-    Your order information is below. A confirmation email has been sent to {{ order.email }}.
+<main class="mx-auto mt-32 space-y-6 md:max-w-screen-md">
+  <div>
+    <h1 class="text-xl">Thank you for your order! {{ order.full_name }}</h1>
+    <p>
+      Your order information is below. A confirmation email has been sent to
+      {{order.email }}.
+    </p>
+  </div>
 
-  </p>
-</div>
+  <div class="rounded-md border p-4">
+    <h2>Order Information</h2>
+    <p>
+      Order Number: {{ order.id }} <br />
+      Order Date: {{ order.date }} <br />
+      Order Total: €{{ order.order_total }} <br />
+    </p>
+
+    <div class="mt-6">
+      <h3>Customer details</h3>
+      <div class="mt-4 space-y-2">
+        {% for items, details in customer_details.items %}
+
+          <div class="flex py-0.5 px-2 flex-wrap justify-between odd:bg-gray-100 odd:rounded:sm">
+            <p>{{ items }}</p>
+            <p>{{ details }}</p>
+          </div>
+          {% endfor %}
+
+      </div>
+    </div>
+
+    <div class="mt-4 space-y-4 divide-y">
+      {% for item in order.line_items.all %}
+      <div class="pt-2">
+        <div>
+          <p>{{ item.product.name }}</p>
+          {% if item.product_size %}
+          <p>Size: ({{ item.product_size|capfirst }})</p>
+          {% endif %}
+        </div>
+
+        <div class="flex flex-wrap justify-between gap-x-4">
+          <p>Qty: {{ item.quantity }} @ €{{ item.product.price }} each</p>
+          <p>Total: {{ item.lineitem_total }}</p>
+        </div>
+      </div>
+
+      {% endfor %}
+    </div>
+  </div>
+</main>
 
 {% endblock %}
