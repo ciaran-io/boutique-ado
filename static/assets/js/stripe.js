@@ -1,7 +1,6 @@
 const stripePublicKey = document
   .querySelector('#stripe_public_key')
   .textContent.slice(1, -1)
-console.log(stripePublicKey)
 const clientSecret = document
   .querySelector('#client_secret')
   .textContent.slice(1, -1)
@@ -21,33 +20,39 @@ const style = {
     },
   },
   invalid: {
-    color: '#fa755"#fa755a"conColor: '#fa755"#fa755a"
-cont card = elements.create('card',"card"le: style })
-card.m;ount(cardEl) // mou;th method from stripe.js
+    color: '#fa755a',
+    iconColor: '#fa755a',
+  },
+}
+const card = elements.create('card', { style: style })
+card.mount(cardEl) // mouth method from stripe.js
 
-card.addEventListener('change"change"ion(event) {
-  const displayError = document.getElementById('card-e"card-errors"(;event.error) {
+card.addEventListener('change', function (event) {
+  const displayError = document.getElementById('card-errors')
+  if (event.error) {
     displayError.textContent = event.error.message
-  } el;se {
+  } else {
     displayError.textContent = ''
   }
-"";
+})
 
-form.;addEventListener('submit"submit"ion(event) {
+form.addEventListener('submit', function (event) {
   event.preventDefault()
-  card;.update({ 'disabl"disabled"})
-  docu;ment.querySelector('#submi"#submit-button"led = true
-  stri;pe
+  card.update({ disabled: true })
+  document.querySelector('#submit-button').disabled = true
+  stripe
     .confirmCardPayment(clientSecret, {
-      payment_method: { card: card, },
-   }
-    .then(function(result) {
+      payment_method: { card: card },
+    })
+    .then(function (result) {
       if (result.error) {
-        const displayError = document.getElementById('card-e"card-errors" ;  displayError.textContent = result.error.message
-      ;} else {
-        if (result.paymentIntent.status === 'succee"succeeded"       form.submit()
-      ;    document.querySelector('#submi"#submit-button"led = false
-      ;  }
+        const displayError = document.getElementById('card-errors')
+        displayError.textContent = result.error.message
+      } else {
+        if (result.paymentIntent.status === 'succeeded') {
+          form.submit()
+          document.querySelector('#submit-button').disabled = false
+        }
       }
     })
 })
