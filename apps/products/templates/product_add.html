@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <section class="container mt-12 space-y-12 lg:max-w-screen-md">
+
+  <div>
+    <h1 class="text-3xl border p-2 rounded">Product Management</h1>
+  </div>
+  <main class="space-y-4">
+    <h2 class="text-xl">Add a new product</h2>
+    <form
+      class="grid [&_div]:grid [&_div]:gap-y-1 gap-y-4"
+      action="{% url 'product_create' %}"
+      method="post"
+      enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <div>
+        {#<a href="{% url 'product_list' %}">Cancel</a>#}
+        <input type="submit" value="Add Product">
+        </div>
+    </form>
+  </main>
+  </section>
+{% endblock content %}
