@@ -3,50 +3,48 @@
 @tailwind utilities;
 
 @layer base {
-    :root {
-        --alert-success: 140 50% 64%;
-        --alert-error: 6 78% 57%;
-        --alert-warning: 48 89% 50%;
-        --alert-info: 204 70% 53%;
-        --alert-secondary: 184 9% 62%;
-    }
+  :root {
+    --alert-success: 140 50% 64%;
+    --alert-error: 6 78% 57%;
+    --alert-warning: 48 89% 50%;
+    --alert-info: 204 70% 53%;
+    --alert-secondary: 184 9% 62%;
+  }
 }
 
 @layer components {
-    /* Alert box*/
-    div#header-alert[role="alert"] {
-
-        @apply
-        top-[100px]
+  /* Alert box*/
+  div#header-alert[role='alert'] {
+    @apply fixed
         right-[100px]
-        border-t-4
-        fixed
+        top-[100px]
         z-50
-        bg-white
-        shadow-lg
+        w-96
         rounded-lg
-        p-4 w-96;
+        border-t-4
+        bg-white
+        p-4 shadow-lg;
 
-       &[data-alert-type="alert-success"]  {
-            @apply border-alert-success ;
-        }
-
-        &[data-alert-type="alert-danger"]  {
-            @apply border-alert-error ;
-        }
-
-        &[data-alert-type="alert-warning"]  {
-            @apply border-alert-warning ;
-        }
-
-        &[data-alert-type="alert-info"]  {
-            @apply border-alert-info ;
-        }
-
-        &[data-alert-type="alert-secondary"]  {
-            @apply border-alert-secondary ;
-        }
+    &[data-alert-type='alert-success'] {
+      @apply border-alert-success;
     }
+
+    &[data-alert-type='alert-danger'] {
+      @apply border-alert-error;
+    }
+
+    &[data-alert-type='alert-warning'] {
+      @apply border-alert-warning;
+    }
+
+    &[data-alert-type='alert-info'] {
+      @apply border-alert-info;
+    }
+
+    &[data-alert-type='alert-secondary'] {
+      @apply border-alert-secondary;
+    }
+  }
 }
 
 /* Mobile menu*/
@@ -54,83 +52,91 @@
   @apply left-0;
 }
 
-@layer base {
-  body {
-    @apply relative -z-10 h-screen w-full bg-cover bg-fixed bg-no-repeat;
-    background-image: image-set(
-      url('../images/home-banner-lg.webp') 1x,
-      url('../images/home-banner-lg@2x.webp') 2x
+/*Home page hero banner*/
+#home-page-hero-banner {
+  @apply relative -z-10 h-screen w-full bg-cover bg-fixed bg-no-repeat;
+  background-image: image-set(
+    url('../images/home-banner-lg.webp') 1x,
+    url('../images/home-banner-lg@2x.webp') 2x
+  );
+  background-position: center center;
+}
+
+@screen md {
+  #home-page-hero-banner {
+    background-image: -webkit-image-set(
+      url('../images/home-banner-xl.webp') 1x,
+      url('../images/home-banner-xl@2x.webp') 2x
     );
-    background-position: center center;
-
-    @screen md {
-      background-image: -webkit-image-set(
-        url('../images/home-banner-xl.webp') 1x,
-        url('../images/home-banner-xl@2x.webp') 2x
-      );
-    }
-
-    @screen lg {
-      background-image: url('../images/home-banner.webp');
-    }
   }
+}
+
+@screen lg {
+  #home-page-hero-banner {
+    background-image: url('../images/home-banner.webp');
+  }
+}
 
 /* Product page*/
 #products > div {
-    @apply relative z-10;
+  @apply relative;
 
-    &::after {
-        @apply absolute
+  &::after {
+    @apply absolute
         -bottom-7
         h-0.5
         w-[calc(100%+4rem)]
         bg-gray-200
         content-[''];
-        /*4rem is the is the grid gap between the products*/
-    }
+    /*4rem is the is the grid gap between the products*/
+  }
 }
 
 /*stripe form elements*/
 
 .StripeElement,
 .stripe-style-input {
-    box-sizing: border-box;
-    height: 40px;
-    padding: 10px 12px;
-    border: 1px solid transparent;
-    border-radius: 0px;
-    background-color: white;
-    box-shadow: 0 1px 3px 0 #e6ebf1;
-    -webkit-transition: box-shadow 150ms ease;
-    transition: box-shadow 150ms ease;
+  box-sizing: border-box;
+  height: 40px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 0px;
+  background-color: white;
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
 }
 
 .StripeElement--focus,
 .stripe-style-input:focus,
 .stripe-style-input:active {
-    box-shadow: 0 1px 3px 0 #cfd7df;
+  box-shadow: 0 1px 3px 0 #cfd7df;
 }
 
 .StripeElement--webkit-autofill {
-    background-color: #fefde5 !important;
+  background-color: #fefde5 !important;
 }
 
 .stripe-style-input::placeholder {
-    color: #aab7c4;
+  color: #aab7c4;
 }
 
 .fieldset-label {
-    position: relative;
-    right: 0.45rem;
-}
-
-.fieldset-label {
-    position: relative;
-    right: 0.45rem;
+  position: relative;
+  right: 0.45rem;
 }
 
 #payment-form .form-control,
 #card-element {
-    color: #000;
-    border: 1px solid #000;
+  color: #000;
+  border: 1px solid #000;
+}
+
+form ul.errorlist {
+  @apply text-red-500;
+
+  /*    add border yo next inout sibling*/
+  & + input {
+    @apply border-2 border-red-500;
+  }
 }
