@@ -1,7 +1,9 @@
-<div class="overflow-x-auto ">
-{# FIXME: make table responsive#}
+{% load cart_tags %}
+
+<div class="overflow-x-auto">
+  {# FIXME: make table responsive#}
   <table
-    class="border-separate table-auto border border-slate-200 rounded p-4 border-spacing-y-4 mx-auto	"
+    class="mx-auto table-auto border-separate border-spacing-y-4 rounded border border-slate-200 p-4"
   >
     <thead>
       <tr>
@@ -12,29 +14,84 @@
         <th>Subtotal</th>
       </tr>
     </thead>
-    <tbody >
+    <tbody>
       {% for item in cart_items %}
-      <tr class=" [&_td]:p-8 [&_td]:align-top " >
+      <tr class="[&_td]:p-8 [&_td]:align-top">
         <td>
+          {%if item.product.img %}
           <img
-            height="180"
-            width="180"
+            width="65"
+            height="65"
             src="{{ item.product.image.url }}"
-            alt="{{ product.name }}"
+            alt="{{ item.product.name }}"
           />
+          {% else %}
+          <img
+            width="65"
+            height="65"
+            src="{{ MEDIA_URL }}no-image.svg"
+            alt="{{ item.product.name }}"
+          />
+          {% endif %}
         </td>
         <td>
           <p class="font-bold">{{ item.product.name }}</p>
-          <p class="text-sm opacity-50 uppercase">sku: {{ item.product.sku }}</p>
+          <p class="font-bold">
+            Size: {% if item.product.has_sizes %}{{ item.size|upper }}
+          {% else%}N/A{% endif %}
+          </p>
+          <p class="text-sm uppercase opacity-50">
+            sku: {{ item.product.sku }}
+          </p>
         </td>
         <td>
           <p class="font-bold">€ {{ item.product.price }}</p>
         </td>
         <td>
-          <p class="font-bold">{{ item.quantity }}</p>
+          <form
+            class="quantity-form"
+            method="POST"
+            action="{% url 'adjust_cart' item.item_id %}"
+          >
+            {% csrf_token %}
+            <label for="id_quantity">Quantity</label>
+            <input
+              type="number"
+              id="id_quantity"
+              name="quantity"
+              value="{{ item.quantity }}"
+              min="1"
+              max="100"
+              class="rounded border border-slate-200 p-2"
+              data-item_id="{{ item.item_id }}"
+            />
+            {% if item.product.has_sizes %}
+            <input
+              type="hidden"
+              name="size"
+              value="{{ item.size }}"
+            />
+            {% endif %}
+            <div class="mt-2 flex justify-between gap-x-2">
+              <button
+                data-action="remove"
+                type="submit"
+              >
+                remove
+              </button>
+              <button
+                data-action="update"
+                type="submit"
+              >
+                update
+              </button>
+            </div>
+          </form>
         </td>
         <td>
-          <p class="font-bold">€ {{ item.product.price }}</p>
+          {% with price=item.product.price quantity=item.quantity %}
+          <p class="font-bold">€ {{ price|calculate_total_amount:quantity }}</p>
+          {% endwith %}
         </td>
       </tr>
       {% endfor %}
