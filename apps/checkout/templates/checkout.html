@@ -18,7 +18,7 @@
             action="{% url 'checkout' %}"
             method="POST"
             id="payment-form"
-            class="[&_input]:w-h-max space-y-12  [&_div]:rounded-md [&_div]:border [&_input]:w-full [&_input]:rounded-md [&_input]:border [&_input]:border-gray-400 [&_input]:p-2"
+            class="[&_input]:w-h-max space-y-12  [&_div]:rounded-md [&_div]:border [&_input]:w-full [&_input]:rounded-md [&_input]:border [&_input]:border-gray-400 [&_input]:p-2 [&_select]:w-full [&_select]:rounded-md [&_select]:border [&_select]:border-gray-400 [&_select]:p-2"
           >
             {% csrf_token %}
 
@@ -44,7 +44,16 @@
               <input type="hidden" value="{{ client_secret }}" name="client_secret">
             </fieldset>
 
-            <div class="grid grid-cols-2 gap-x-6">
+            <div class="border-transparent flex justify-between items-start flex-wrap gap-x-2">
+              {% if user.is_authenticated %}
+                <label for="id-save-info">Save delivery</label>
+                <input class="!w-max" type="checkbox" id="id-save-info" name="save-info" checked>
+              {% else %}
+                <p class="text-sm">Already have an account? <a href="{% url 'account_signup' %}">Log in</a></p>
+                <p class="text-sm">Don't have an account? <a href="{% url 'account_register' %}">Register</a></p>
+              {% endif %}
+            </div>
+            <div class="grid grid-cols-2 gap-x-6 !border-transparent">
               <button
                 id="submit-button"
                 class="bg-black text-white font-semibold py-2 px-4 rounded-md shadow-md hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
