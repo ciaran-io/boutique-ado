@@ -37,7 +37,7 @@ DEBUG = development
 if development:
     ALLOWED_HOSTS = []
 else:
-    ALLOWED_HOSTS = ['ci-project-boutique-ado']
+    ALLOWED_HOSTS = [os.environ.get('PRODUCTION_HOSTNAME')]
     # Security additional settings
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
