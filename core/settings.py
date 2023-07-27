@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 if os.path.isfile('env.py'):
     import env
 
-development = os.environ.get('DEVELOPMENT')
+development = os.environ.get('DEVELOPMENT') == 'True'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -37,7 +37,7 @@ DEBUG = development
 if development:
     ALLOWED_HOSTS = []
 else:
-    ALLOWED_HOSTS = [os.environ.get('PRODUCTION_HOSTNAME')]
+    ALLOWED_HOSTS = ['ci-project-boutique-ado']
     # Security additional settings
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
@@ -154,8 +154,6 @@ if development:
         }
     }
 else:
-    import dj_database_url
-
     DATABASES = {
         'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
