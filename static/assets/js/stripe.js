@@ -36,23 +36,83 @@ card.addEventListener('change', function (event) {
   }
 })
 
-form.addEventListener('submit', function (event) {
+form.addEventListener('submit', async function (event) {
   event.preventDefault()
   card.update({ disabled: true })
   document.querySelector('#submit-button').disabled = true
-  stripe
-    .confirmCardPayment(clientSecret, {
-      payment_method: { card: card },
+
+  const saveInfo = Boolean(document.querySelector('#id-save-info').checked)
+  const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value
+  const postData = {
+    csrfmiddlewaretoken: csrfToken,
+    client_secret: clientSecret,
+    save_info: saveInfo,
+  }
+
+  const url = '/checkout/cache_checkout_data/'
+
+  const billingDetails = {
+    name: form.full_name.value.trim(),
+    phone: form.phone_number.value.trim(),
+    email: form.email.value.trim(),
+    address: {
+      line1: form.street_address1.value.trim(),
+      line2: form.street_address2.value.trim(),
+      city: form.town_or_city.value.trim(),
+      country: form.country.value.trim(),
+      state: form.county.value.trim(),
+    },
+  }
+
+  const shippingDetails = {
+    name: form.full_name.value.trim(),
+    phone: form.phone_number.value.trim(),
+    address: {
+      line1: form.street_address1.value.trim(),
+      line2: form.street_address2.value.trim(),
+      city: form.town_or_city.value.trim(),
+      country: form.country.value.trim(),
+      postal_code: form.postcode.value.trim(),
+      state: form.county.value.trim(),
+    },
+  }
+
+  try {
+    await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrfToken,
+      },
+      body: JSON.stringify(postData),
+    }).then(() => {
+      stripe
+        .confirmCardPayment(clientSecret, {
+          payment_method: {
+            card: card,
+            billing_details: billingDetails,
+          },
+          shipping: shippingDetails,
+        })
+        .then((result) => {
+          if (result.error) {
+            const displayError = document.getElementById('card-errors')
+            displayError.textContent = result.error.message
+            card.update({ disabled: false })
+            document.querySelector('#submit-button').disabled = false
+          } else {
+            if (result.paymentIntent.status === 'succeeded') {
+              document.querySelector('#submit-button').disabled = false
+              form.submit()
+            }
+          }
+        })
     })
-    .then(function (result) {
-      if (result.error) {
-        const displayError = document.getElementById('card-errors')
-        displayError.textContent = result.error.message
-      } else {
-        if (result.paymentIntent.status === 'succeeded') {
-          form.submit()
-          document.querySelector('#submit-button').disabled = false
-        }
-      }
-    })
+  } catch (error) {
+    console.log(
+      'There has been a problem with your fetch operation: ',
+      error.message
+    )
+    location.reload()
+  }
 })
