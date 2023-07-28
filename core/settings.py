@@ -34,10 +34,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = development
 
 # Application definition
-if development:
-    ALLOWED_HOSTS = []
-else:
-    ALLOWED_HOSTS = [os.environ.get('PRODUCTION_HOSTNAME')]
+ALLOWED_HOSTS = [os.environ.get('PRODUCTION_HOSTNAME'), 'localhost',
+                 '127.0.0.1']
+
+if not development:
     # Security additional settings
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     'apps.cart',
     'apps.checkout',
     'apps.profiles',
+    'storages',
 ]
 
 # Provider specific settings
@@ -209,6 +210,12 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+if 'USE_AWS' in os.environ:
+    AWS_STORAGE_BUCKET_NAME = 'ci-project-boutique-ado'
+    AWS_S3_REGION_NAME = 'eu-west-1'
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 
 # stripe settings
 FREE_DELIVERY_THRESHOLD = 50
