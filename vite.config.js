@@ -12,11 +12,12 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve('./static/assets/js/main.js'),
+        stripe: resolve('./static/assets/js/stripe.js'),
         cssImport: resolve('./static/assets/js/css-import.js'),
       },
     },
     css: {
-      postcss: "./postcss.config.js",
-    }
+      postcss: './postcss.config.js',
+    },
   },
 })
