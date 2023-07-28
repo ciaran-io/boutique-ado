@@ -10,7 +10,7 @@
   >
     <a
       class="block font-semibold"
-      href="{{ item.url }}"
+      href="{% url 'products'%}{% if item.url %}?category={{ item.url }}{% endif %}"
       >{{ item.name }}
     </a>
     {# Sub nav links #} {% if item.sublist %}
@@ -23,7 +23,8 @@
 
       <a
         class="block decoration-gray-700 underline-offset-4 md:hover:underline"
-        href="{% url 'products' %}?{% if item.name == 'All products' %}sort={{ subitem.url }}{% elif subitem %}category={{ subitem.url }}{% endif %}"
+        href="{% url 'products' %}?{% if item.name == 'All products' %}sort={{ subitem.url }}{% elif subitem %}category={{ subitem.url }}
+      {% endif %}"
       >
         {{ subitem.name }}
       </a>
