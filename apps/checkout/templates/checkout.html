@@ -49,8 +49,9 @@
                 <label for="id-save-info">Save delivery</label>
                 <input class="!w-max" type="checkbox" id="id-save-info" name="save-info" checked>
               {% else %}
-                <p class="text-sm">Already have an account? <a href="{% url 'account_signup' %}">Log in</a></p>
-                <p class="text-sm">Don't have an account? <a href="{% url 'account_register' %}">Register</a></p>
+              {#  FIXME: ACCOUNT REGISTER /SIGNUP LINKS              #}
+                {#<p class="text-sm">Already have an account? <a href="{% url 'account_signup' %}">Log in</a></p>#}
+                {#<p class="text-sm">Don't have an account? <a href="{% url 'account_register' %}">Register</a></p>#}
               {% endif %}
             </div>
             <div class="grid grid-cols-2 gap-x-6 !border-transparent">
