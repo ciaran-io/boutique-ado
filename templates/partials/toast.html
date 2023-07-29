@@ -24,7 +24,7 @@
     {% comment %}
      FIXME: USE REGEX IN CONTEXT PROCESSOR TO LIMIT TO SPECIFIC VIEWS
      {% endcomment %}
-    {% if not "checkout_success" in request.path and not'new' in request.path %}
+    {% if not "checkout_success" in request.path and not 'new' in request.path %}
       {% if free_delivery_delta %}
     <div class="rounded bg-amber-400 py-2 text-sm font-semibold">
       <p>Spend €{{ free_delivery_delta }} more to get FREE DELIVERY!</p>
@@ -35,7 +35,7 @@
       <p class="text-left">Total items: ({{ product_count }})</p>
       {% for item in cart_items %} {# Product image & details #}
       <div class="grid grid-cols-[1fr,2fr]">
-        {%if item.product.img %}
+        {% if item.product.image %}
         <img
           width="65"
           height="65"
